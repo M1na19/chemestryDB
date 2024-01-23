@@ -2,7 +2,7 @@
 ![img.png](img.png)
 # FOR MYSQL
 1. In Bash:
-```bash
+```shell
 sudo apt update
 sudo apt install libmysqlcppconn-dev
 ```
@@ -11,4 +11,8 @@ sudo apt install libmysqlcppconn-dev
 CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
 GRANT ALL PRIVILEGES ON chimie.* TO 'test'@'localhost';
 CREATE DATABASE chimie;
+```
+# TO RUN
+```shell
+g++ main.cpp -o main -lmysqlcppconn
 ```
