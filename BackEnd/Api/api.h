@@ -2,6 +2,7 @@
 #define CHEMESTRYDB_API_H
 #include "crow.h"
 #include "../DataBase/data.h"
+#include "../Logic/substance.h"
 void Initialize() {
     DataBase db;
     db.Initialize();
