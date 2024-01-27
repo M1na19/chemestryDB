@@ -6,7 +6,6 @@
 void Initialize() {
     DataBase db;
     db.Initialize();
-    db.createTables();
     crow::SimpleApp app;
 
     CROW_ROUTE(app, "/hello")(
