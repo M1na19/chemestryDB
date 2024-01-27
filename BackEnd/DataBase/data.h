@@ -27,15 +27,23 @@ class DataBase{
             delete con;
         }
         void exec(char* query) {
-            sql::Statement *stmt = con->createStatement();
-            stmt->execute(query);
-            delete stmt;
+            try {
+                sql::Statement *stmt = con->createStatement();
+                stmt->execute(query);
+                delete stmt;
+            }catch(...) {
+                std::cout<<"Could not execute query="<<query;
+            }
         }
 
         sql::ResultSet* query(char* query) {
-            sql::Statement *stmt = con->createStatement();
-            sql::ResultSet *res = stmt->executeQuery(query);
-            return res;
+            try {
+                sql::Statement *stmt = con->createStatement();
+                sql::ResultSet *res = stmt->executeQuery(query);
+                return res;
+            }catch (...){
+                std::cout<<"Could not execute query="<<query;
+            }
         }
 
         void createTables(){

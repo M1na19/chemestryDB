@@ -13,5 +13,7 @@ include_directories(BackEnd)
 add_executable(main ${SOURCE_FILES})
 target_link_libraries(main mysqlcppconn)
 
+add_executable(test ./BackEnd/Logic/test.cpp)
+
 # Add additional dependencies if needed
 # target_link_libraries(YourExecutableName ...)
