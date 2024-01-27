@@ -5,7 +5,6 @@
 #include "../Logic/substance.h"
 void Initialize() {
     DataBase db;
-    db.Initialize();
     crow::SimpleApp app;
 
     CROW_ROUTE(app, "/hello")(
