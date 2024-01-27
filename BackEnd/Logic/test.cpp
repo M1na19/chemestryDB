@@ -35,5 +35,5 @@ int main(){
     butan.atoms.push_back(*new Atom(12,"H",{2}));
     butan.atoms.push_back(*new Atom(13,"H",{1}));
 
-    std::cout<<butan.same(butan);
+    std::cout<<butan.validate();
 }

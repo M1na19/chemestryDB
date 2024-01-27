@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <string>
 #include <sstream>
 #include <map>
@@ -40,6 +41,18 @@ class Atom{
             while(getline(ss,tieString,',') && tieString.find(']')==-1){
                 ties.push_back(stoi(tieString));
             }
+        }
+        int valence() const{
+            if(name=="C"){
+                return 4;
+            }else if(name=="H" || name=="Cl" || name=="I" || name=="NO2" || name=="SO4"){
+                return 1;
+            }else if(name=="O"){
+                return 2;
+            } else if(name=="N"){
+                return 5;
+            }
+            return -1;
         }
 };
 class Substance{
@@ -120,5 +133,20 @@ class Substance{
             }else{
                 return false;
             }
+        }
+        bool validate() {
+            int indx=0;
+            for (auto &atomA: atoms) {
+                if (atomA.valence() != atomA.ties.size()) {
+                    return false;
+                }
+                for (auto &neigh: getNeighbours(indx)) {
+                    if(std::find(atoms[neigh->id].ties.begin(), atoms[neigh->id].ties.end(),indx)==atoms[neigh->id].ties.end()){
+                        return false;
+                    }
+                }
+                indx++;
+            }
+            return true;
         }
 };
