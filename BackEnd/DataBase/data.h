@@ -26,7 +26,7 @@ class DataBase{
         ~DataBase() {
             delete con;
         }
-        void exec(char* query) {
+        void exec(const char *query) const{
             try {
                 sql::Statement *stmt = con->createStatement();
                 stmt->execute(query);
@@ -36,7 +36,7 @@ class DataBase{
             }
         }
 
-        sql::ResultSet* query(char* query) {
+        sql::ResultSet* query(const char* query) {
             try {
                 sql::Statement *stmt = con->createStatement();
                 sql::ResultSet *res = stmt->executeQuery(query);
@@ -73,5 +73,5 @@ class DataBase{
             this->exec("ALTER TABLE `Reactii` ADD CONSTRAINT `Reactii_fk3` FOREIGN KEY (`produs2`) REFERENCES `Substante`(`id`);");
         }
 };
-
+const DataBase db;
 #endif //CHEMESTRYDB_DATA_H

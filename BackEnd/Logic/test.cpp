@@ -1,7 +1,9 @@
 #include "substance.h"
+#include "../DataBase/substance.h"
 #include <iostream>
 int main(){
     Substance izobutan;
+    izobutan.name="IzoButan";
     izobutan.type="Alcan";
     izobutan.atoms.push_back(*new Atom(0,"C",{1,4,5,6}));
     izobutan.atoms.push_back(*new Atom(1,"C",{0,2,3,7}));
@@ -20,6 +22,7 @@ int main(){
 
     Substance butan;
     butan.type="Alcan";
+    butan.name="Butan";
     butan.atoms.push_back(*new Atom(0,"C",{1,4,5,6}));
     butan.atoms.push_back(*new Atom(1,"C",{0,2,7,13}));
     butan.atoms.push_back(*new Atom(2,"C",{1,3,8,12}));
@@ -35,5 +38,6 @@ int main(){
     butan.atoms.push_back(*new Atom(12,"H",{2}));
     butan.atoms.push_back(*new Atom(13,"H",{1}));
 
-    std::cout<<butan.validate();
+    //SubstanceManager::addSubstance(butan.type,butan.getFM(),butan.serialize(),butan.name);
+    SubstanceManager::removeSubstanceById(7);
 }

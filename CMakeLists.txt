@@ -16,6 +16,7 @@ target_link_libraries(main mysqlcppconn)
 add_executable(test ./BackEnd/Logic/test.cpp)
 add_executable(reset reseter.cpp)
 target_link_libraries(reset mysqlcppconn)
+target_link_libraries(test mysqlcppconn)
 
 # Add additional dependencies if needed
 # target_link_libraries(YourExecutableName ...)

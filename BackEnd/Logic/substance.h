@@ -58,11 +58,12 @@ class Atom{
 class Substance{
     public:
         vector<Atom> atoms;
+        string name;
         string type;
 
         string serialize(){
             stringstream ss;
-            ss<<type<<'{';
+            ss<<'{';
             int idx=0;
             for(auto &atom:atoms){
                 ss<<atom.serialize()<< ';';
@@ -72,8 +73,6 @@ class Substance{
         }
         void deserialize(string str){
             stringstream ss(str);
-
-            getline(ss,type,'{');
 
             string atomString;
             while(getline(ss,atomString,';') && atomString.find('}')==-1){
@@ -89,7 +88,17 @@ class Substance{
             }
             return neigh;
         }
-
+        string getFM() {
+            map<string, int> FM;
+            for (auto &atom: atoms) {
+                FM[atom.name]++;
+            }
+            stringstream ss;
+            for(auto &pair:FM){
+                ss<<pair.first<<pair.second;
+            }
+            return ss.str();
+        }
         bool same(Substance& x){
             int equivalent=0;
             map<string,int> ties1;
