@@ -13,11 +13,45 @@ void Initialize() {
     []() {
         return "Hello World";
     });
+    CROW_ROUTE(app,"/add").methods(crow::HTTPMethod::POST)(
+        [](const crow::request& req){
+            string name=req.get_body_params().get("name");
+            string tip=req.get_body_params().get("type");
+            string stringMatrix=req.get_body_params().get("struct");
 
+            crow::response res;
+            //parse string
+
+            Substance sent;
+            try{
+                sent.deserialize(stringMatrix);
+            }catch(const exception& e){
+                res.code=400;
+                res.write("Could not parse matrix");
+                cout<<e.what()<<"\n";
+                return res;
+            }
+            //validate
+            if(!sent.validate()){
+                res.code=400;
+                res.write("Substance is not valid");
+                return res;
+            }
+            try {
+                SubstanceManager::addSubstance(tip, sent.getFM(), sent.serialize(), name);
+            }catch(const exception& e){
+                res.code=400;
+                res.write("Could not put substance");
+                cout<<e.what()<<"\n";
+                return res;
+            }
+            res.code=200;
+            return res;
+        });
     //Find substance by structure
     CROW_ROUTE(app,"/find").methods(crow::HTTPMethod::POST)(
     [](const crow::request& req){
-        string stringMatrix=req.get_body_params().get("data");
+        string stringMatrix=req.get_body_params().get("struct");
 
         crow::response res;
         //parse string
