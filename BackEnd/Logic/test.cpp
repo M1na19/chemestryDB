@@ -38,6 +38,6 @@ int main(){
     butan.atoms.push_back(*new Atom(12,"H",{2}));
     butan.atoms.push_back(*new Atom(13,"H",{1}));
 
-    //SubstanceManager::addSubstance(butan.type,butan.getFM(),butan.serialize(),butan.name);
-    SubstanceManager::removeSubstanceById(7);
+    SubstanceManager::addSubstance(butan.type,butan.getFM(),butan.serialize(),butan.name);
+    SubstanceManager::addSubstance(izobutan.type,izobutan.getFM(),izobutan.serialize(),izobutan.name);
 }

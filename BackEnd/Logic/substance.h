@@ -71,9 +71,9 @@ class Substance{
             ss<<"}";
             return ss.str();
         }
-        void deserialize(string str){
+        void deserialize(const string& str){
             stringstream ss(str);
-
+            ss.ignore();
             string atomString;
             while(getline(ss,atomString,';') && atomString.find('}')==-1){
                 Atom newAtom;

@@ -21,8 +21,21 @@ class SubstanceManager{
             ss<<"DELETE FROM substante WHERE id="<<id;
             db.exec(ss.str().c_str());
         }
-        static void selectAtomByStructure(){
-            //to do
+        static vector<Substance> selectSubstancesByFM(const std::string& FM){
+            vector<Substance> sbsts;
+
+            std::stringstream ss;
+            ss<<"SELECT tip,nume,FS FROM substante WHERE FM='"<<FM<<"'";
+            auto check=ss.str();
+            auto results=db.query(ss.str().c_str());
+            while(results->next()){
+                Substance sbst;
+                sbst.type=results->getString("tip");
+                sbst.name=results->getString("nume");
+                sbst.deserialize(results->getString("FS"));
+                sbsts.push_back(sbst);
+            }
+            return sbsts;
         }
 };
 

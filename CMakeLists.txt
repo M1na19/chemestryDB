@@ -3,14 +3,12 @@ project(chemestryDB)
 
 set(CMAKE_CXX_STANDARD 11)
 
-# Add source files
-set(SOURCE_FILES main.cpp)
 
 # Add header files
 include_directories(BackEnd)
 
 # Add executable
-add_executable(main ${SOURCE_FILES})
+add_executable(main main.cpp)
 target_link_libraries(main mysqlcppconn)
 
 add_executable(test ./BackEnd/Logic/test.cpp)

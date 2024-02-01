@@ -36,17 +36,18 @@ class DataBase{
             }
         }
 
-        sql::ResultSet* query(const char* query) {
+        sql::ResultSet* query(const char* query) const{
             try {
                 sql::Statement *stmt = con->createStatement();
                 sql::ResultSet *res = stmt->executeQuery(query);
                 return res;
             }catch (...){
                 std::cout<<"Could not execute query="<<query;
+                return nullptr;
             }
         }
 
-        void Initialize(){
+        void Initialize() const{
             this->exec("DROP TABLE IF EXISTS substante");
             this->exec("DROP TABLE IF EXISTS reactii");
             this->exec("CREATE TABLE `substante` (\n"
