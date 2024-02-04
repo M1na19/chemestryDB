@@ -1,3 +1,7 @@
+
+#ifndef LOGIC_SUBSTANCE_H
+#define LOGIC_SUBSTANCE_H
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -159,3 +163,4 @@ class Substance{
             return true;
         }
 };
+#endif //LOGIC_SUBSTANCE_H

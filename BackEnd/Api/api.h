@@ -4,6 +4,9 @@
 #include "crow.h"
 #include "../Logic/substance.h"
 #include "../DataBase/substance.h"
+#include "../DataBase/notes.h"
+#include "notes.h"
+
 using namespace std;
 
 void Initialize() {
@@ -15,13 +18,18 @@ void Initialize() {
     });
     CROW_ROUTE(app,"/add").methods(crow::HTTPMethod::POST)(
         [](const crow::request& req){
-            string name=req.get_body_params().get("name");
-            string tip=req.get_body_params().get("type");
-            string stringMatrix=req.get_body_params().get("struct");
-
             crow::response res;
-            //parse string
+            if(!req.get_body_params().get("name") || !req.get_body_params().get("type") || !req.get_body_params().get("struct")){
+                res.code=400;
+                res.write("Bad Parameters");
+                return res;
+            }
 
+            string name = req.get_body_params().get("name");
+            string tip = req.get_body_params().get("type");
+            string stringMatrix = req.get_body_params().get("struct");
+
+            //parse string
             Substance sent;
             try{
                 sent.deserialize(stringMatrix);
@@ -37,8 +45,16 @@ void Initialize() {
                 res.write("Substance is not valid");
                 return res;
             }
+            //check if name is taken
+            if(data::SubstanceManager::checkForName(name)!=-1){
+                res.code=400;
+                res.write("Name is taken");
+                return res;
+            }
+
             try {
-                SubstanceManager::addSubstance(tip, sent.getFM(), sent.serialize(), name);
+                data::SubstanceManager::addSubstance(tip, sent.getFM(), sent.serialize(), name);
+                data::NotesManager::createNotesTable(name);
             }catch(const exception& e){
                 res.code=400;
                 res.write("Could not put substance");
@@ -51,9 +67,15 @@ void Initialize() {
     //Find substance by structure
     CROW_ROUTE(app,"/find").methods(crow::HTTPMethod::POST)(
     [](const crow::request& req){
+        crow::response res;
+        if(!req.get_body_params().get("struct")){
+            res.code=400;
+            res.write("Bad Parameters");
+            return res;
+        }
         string stringMatrix=req.get_body_params().get("struct");
 
-        crow::response res;
+
         //parse string
 
         Substance sent;
@@ -72,7 +94,7 @@ void Initialize() {
             return res;
         }
         //check db
-        vector<Substance> sbsts=SubstanceManager::selectSubstancesByFM(sent.getFM());
+        vector<Substance> sbsts=data::SubstanceManager::selectSubstancesByFM(sent.getFM());
 
         for(auto &sbst:sbsts){
             if(sent.same(sbst)){
@@ -85,6 +107,34 @@ void Initialize() {
         res.write("Could not find");
         return res;
     });
+    CROW_ROUTE(app,"/remove").methods(crow::HTTPMethod::DELETE)(
+        [](const crow::request& req) {
+            crow::response res;
+            if(!req.get_body_params().get("name")){
+                res.code=400;
+                res.write("Bad Parameters");
+                return res;
+            }
+
+            string name=req.get_body_params().get("name");
+
+            try {
+                int id=data::SubstanceManager::checkForName(name);
+                if(id==-1){
+                    res.code=400;
+                    res.write("Substance does not exist");
+                }else{
+                    data::SubstanceManager::removeSubstanceById(id);
+                    data::NotesManager::deleteNotesTable(name);
+                    res.code=200;
+                }
+            }catch (...){
+                res.code=500;
+                res.write("Could not delete substance");
+            }
+            return res;
+        });
+    api::NotesAPI(app);
     app.port(2000).multithreaded().run();
 }
 
