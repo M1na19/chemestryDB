@@ -12,6 +12,50 @@ using namespace std;
 void Initialize() {
     crow::SimpleApp app;
 
+    CROW_ROUTE(app,"/").methods(crow::HTTPMethod::GET)(
+    [](){
+        crow::response res;
+        res.code=200;
+        res.set_static_file_info("./FrontEnd/main.html");
+        return res;
+    });
+    CROW_ROUTE(app,"/CSS/<string>").methods(crow::HTTPMethod::GET)(
+            [](const std::string& file){
+                std::stringstream ss;
+                ss<<"./FrontEnd/CSS/";
+                ss<<file;
+
+                crow::response res;
+                res.code=200;
+                res.set_static_file_info(ss.str());
+                return res;
+            });
+    CROW_ROUTE(app,"/JS/<string>").methods(crow::HTTPMethod::GET)(
+            [](const std::string& file){
+                std::stringstream ss;
+                ss<<"./FrontEnd/JS/";
+                ss<<file;
+
+                crow::response res;
+                res.code=200;
+                res.set_static_file_info(ss.str());
+                return res;
+            });
+    CROW_ROUTE(app,"/Atomi/<string>").methods(crow::HTTPMethod::GET)(
+            [](const std::string& file){
+                std::stringstream ss;
+                ss<<"./FrontEnd/Atomi/";
+                ss<<file;
+
+                crow::response res;
+                res.code=200;
+                res.set_static_file_info(ss.str());
+                return res;
+            });
+
+
+
+
     CROW_ROUTE(app, "/hello")(
     []() {
         return "Hello World";

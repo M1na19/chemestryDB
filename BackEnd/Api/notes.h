@@ -95,6 +95,8 @@ namespace api{
                     }
                     try{
                         data::NotesManager::removeNote(name,id);
+                        res.code=200;
+                        return res;
                     }catch(...){
                         res.code=500;
                         res.write("Could not remove note");

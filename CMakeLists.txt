@@ -8,8 +8,7 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(BackEnd)
 
 # Add executable
-add_executable(main.cpp
-        BackEnd/Api/notes.h)
+add_executable(main main.cpp)
 target_link_libraries(main mysqlcppconn)
 
 add_executable(test ./BackEnd/Logic/test.cpp)
