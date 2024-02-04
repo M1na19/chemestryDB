@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 USER root
-RUN apt-get update ; apt-get install -y g++ libmysqlcppconn-dev mysql-server  build-essential cmake libasio-dev git
+RUN apt-get update && apt-get install -y g++ libmysqlcppconn-dev mysql-server  build-essential cmake libasio-dev git
 WORKDIR /app
 ADD ./ /app
 RUN mkdir modules && cd ./modules && git clone https://github.com/CrowCpp/Crow.git && cd ./Crow && mkdir build && cd ./build && cmake .. -DCROW_BUILD_EXAMPLES=OFF -DCROW_BUILD_TESTS=OFF && make install
